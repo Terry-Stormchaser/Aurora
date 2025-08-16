@@ -44,15 +44,15 @@ sed -i '/# Flatpak --user logic/,/^}/d' "$HOME/.bashrc"
 echo "${CYAN}Removed Flatpak function from .bashrc${RESET}"
 fi
 
- mkdir -p ~/opt/flatpak
- mkdir -p ~/opt/flatpak-deps
- mkdir -p ~/opt/bin
+ mkdir -p /usr/local/aurora/opt/flatpak
+ mkdir -p /usr/local/aurora/opt/flatpak-deps
+ mkdir -p /usr/local/aurora/opt/bin
  
 export XDG_RUNTIME_DIR="$HOME/.xdg-runtime-dir"
 mkdir -p "$XDG_RUNTIME_DIR"
-chmod 700 "$XDG_RUNTIME_DIR"
+chmod chronos "$XDG_RUNTIME_DIR"
 
-export PATH="$HOME/opt/flatpak/usr/bin:$HOME/opt/flatpak-deps/usr/bin:/bin:/usr/bin:$PATH"
+export PATH="$HOME/opt/flatpak/usr/bin:$APPS/opt/flatpak-deps/usr/bin:/bin:/usr/bin:$PATH"
 if [ ! -S "$XDG_RUNTIME_DIR/dbus-session" ]; then
   dbus-daemon --session \
     --address="unix:path=$XDG_RUNTIME_DIR/dbus-session" \
@@ -65,18 +65,18 @@ export DBUS_SESSION_BUS_ADDRESS=$(cat "$XDG_RUNTIME_DIR/dbus-session.address")
 
 mkdir -p "$XDG_RUNTIME_DIR/doc/portal"
 echo 3 > "$XDG_RUNTIME_DIR/doc/portal/version"
-chmod +x "$HOME/opt/bin/aurora"
-chmod +x "$HOME/opt/bin/starman"
+chmod +x "$APPS/opt/bin/aurora"
+chmod +x "$APPS/opt/bin/starman"
 echo "${MAGENTA}"
-curl -L https://raw.githubusercontent.com/shadowed1/Aurora/main/.flatpak.logic -o ~/opt/.flatpak.logic
+curl -L https://raw.githubusercontent.com/Terry-Stormchaser/Aurora/main/.flatpak.logic -o ~/opt/.flatpak.logic
 echo "${RESET}${BLUE}"
-curl -L https://raw.githubusercontent.com/shadowed1/Aurora/main/aurora -o ~/opt/bin/aurora
+curl -L https://raw.githubusercontent.com/Terry-Stormchaser/Aurora/main/aurora -o ~/opt/bin/aurora
 echo "${RESET}${CYAN}"
-curl -L https://raw.githubusercontent.com/shadowed1/Aurora/main/starman -o ~/opt/bin/starman
+curl -L https://raw.githubusercontent.com/Terry-Stormchaser/Aurora/main/starman -o ~/opt/bin/starman
 echo "${RESET}${BLUE}"
-curl -L https://raw.githubusercontent.com/shadowed1/Aurora/main/version -o ~/opt/bin/version
+curl -L https://raw.githubusercontent.com/Terry-Stormchaser/Aurora/main/version -o ~/opt/bin/version
 echo "${RESET}${MAGENTA}"
-curl -L https://raw.githubusercontent.com/shadowed1/Aurora/main/.flatpak.env -o ~/opt/.flatpak.env
+curl -L https://raw.githubusercontent.com/Terry-Stormchaser/Aurora/main/.flatpak.env -o ~/opt/.flatpak.env
 echo "${RESET}"
 chmod +x ~/opt/bin/aurora
 chmod +x ~/opt/bin/starman
@@ -117,338 +117,58 @@ download_and_extract()
     chmod +x "$HOME/opt/usr/share"/* 2>/dev/null
     echo "${RESET}${CYAN}${FILE} extracted.${RESET}"
 
-    export LD_LIBRARY_PATH="$target_dir/usr/lib:$HOME/opt/usr/lib:$LD_LIBRARY_PATH"
-    export FLATPAK_USER_DIR="$HOME/.local/share/flatpak"
+    export LD_LIBRARY_PATH="$target_dir/usr/lib:$APPS/opt/usr/lib:$LD_LIBRARY_PATH"
+    export FLATPAK_USER_DIR="$APPS/.local/share/flatpak"
     sleep 1
 }
 
 # Flatpak Core
 URL="https://archlinux.org/packages/extra/x86_64/flatpak/download"
-download_and_extract "$URL" "$HOME/opt/flatpak"
+download_and_extract "$URL" "$APPS/opt/flatpak"
 
 URL="https://archlinux.org/packages/extra/x86_64/ostree/download"
-download_and_extract "$URL" "$HOME/opt/flatpak-deps"
+download_and_extract "$URL" "$APPS/opt/flatpak-deps"
 
 URL="https://archlinux.org/packages/core/x86_64/libxml2/download"
-download_and_extract "$URL" "$HOME/opt/flatpak-deps"
+download_and_extract "$URL" "$APPS/opt/flatpak-deps"
 
 URL="https://archlinux.org/packages/extra/x86_64/libmalcontent/download"
-download_and_extract "$URL" "$HOME/opt/flatpak-deps"
+download_and_extract "$URL" "$APPS/opt/flatpak-deps"
 
 URL="https://archlinux.org/packages/core/x86_64/gpgme/download"
-download_and_extract "$URL" "$HOME/opt/flatpak-deps"
+download_and_extract "$URL" "$APPS/opt/flatpak-deps"
 
 URL="https://archlinux.org/packages/extra/x86_64/libsodium/download"
-download_and_extract "$URL" "$HOME/opt/flatpak-deps"
+download_and_extract "$URL" "$APPS/opt/flatpak-deps"
 
 URL="https://archlinux.org/packages/extra/x86_64/composefs/download"
-download_and_extract "$URL" "$HOME/opt/flatpak-deps"
+download_and_extract "$URL" "$APPS/opt/flatpak-deps"
 
 URL="https://archlinux.org/packages/extra/x86_64/bubblewrap/download"
-download_and_extract "$URL" "$HOME/opt/flatpak-deps"
+download_and_extract "$URL" "$APPS/opt/flatpak-deps"
 
 URL="https://archlinux.org/packages/extra/x86_64/xdg-dbus-proxy/download"
-download_and_extract "$URL" "$HOME/opt/flatpak-deps"
+download_and_extract "$URL" "$APPS/opt/flatpak-deps"
 
 URL="https://archlinux.org/packages/extra/x86_64/xdg-desktop-portal/download"
-download_and_extract "$URL" "$HOME/opt/flatpak-deps"
+download_and_extract "$URL" "$APPS/opt/flatpak-deps"
 
 URL="https://archlinux.org/packages/extra/x86_64/xdg-desktop-portal-gtk/download"
-download_and_extract "$URL" "$HOME/opt/flatpak-deps"
+download_and_extract "$URL" "$APPS/opt/flatpak-deps"
 
 ############################################################## 
 # Fastfetch
 URL="https://archlinux.org/packages/extra/x86_64/fastfetch/download"
-download_and_extract "$URL" "$HOME/opt/"
+download_and_extract "$URL" "$APPS/opt/"
 
 URL="https://archlinux.org/packages/extra/x86_64/yyjson/download"
-download_and_extract "$URL" "$HOME/opt/"
+download_and_extract "$URL" "$APPS/opt/"
 
 ############################################################## 
 # Nano
 URL="https://archlinux.org/packages/core/x86_64/nano/download"
-download_and_extract "$URL" "$HOME/opt/"
+download_and_extract "$URL" "$APPS/opt/"
 
-############################################################## 
-# Git
-URL="https://archlinux.org/packages/extra/x86_64/git/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/core/x86_64/expat/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/core/x86_64/pcre2/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/core/x86_64/openssl/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/core/x86_64/perl/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/any/perl-error/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/any/perl-mailtools/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/core/x86_64/shadow/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/x86_64/zlib-ng/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/core/x86_64/libcurl-gnutls/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/core/x86_64/zstd/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/core/x86_64/lz4/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/core/x86_64/leancrypto/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/core/x86_64/libidn2/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/core/x86_64/libp11-kit/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/core/x86_64/libffi/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/core/x86_64/glibc/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/core/x86_64/tzdata/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/core/x86_64/libtasn1/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/core/x86_64/libunistring/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/core/x86_64/nettle/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/core/x86_64/gmp/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/core/x86_64/zlib/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/core/x86_64/gcc-libs/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/any/npm/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/x86_64/jq/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/x86_64/oniguruma/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/any/node-gyp/download"
-download_and_extract "$URL" "$HOME/opt/flatpak-deps"
-
-URL="https://archlinux.org/packages/extra/any/semver/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/x86_64/nodejs/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-# gcc
-URL="https://archlinux.org/packages/core/x86_64/gcc/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/core/x86_64/binutils/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/core/x86_64/jansson/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/core/x86_64/libelf/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/core/x86_64/json-c/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-
-# python
-URL="https://archlinux.org/packages/core/x86_64/brotli/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/x86_64/cmake/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/any/nlohmann-json/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/core/x86_64/python/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/any/python-sphinx/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/any/python-babel/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/core/x86_64/libxcrypt/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/core/x86_64/mpdecimal/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/any/python-pytz/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/any/python-jaraco.collections/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/any/python-setuptools/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/any/python-jaraco.functools/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/any/python-jaraco.text/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/any/python-more-itertools/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/any/python-packaging/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/any/python-freezegun/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/any/python-pytest/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/any/python-docutils/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/any/python-imagesize/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/any/python-jinja/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/any/python-pygments/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/any/python-snowballstemmer/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/any/python-roman-numerals-py/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/any/python-sphinx-alabaster-theme/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/any/python-sphinxcontrib-htmlhelp/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/any/python-sphinxcontrib-jsmath/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/any/python-sphinxcontrib-qthelp/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/any/python-sphinxcontrib-serializinghtml/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/x86_64/cppdap/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/x86_64/jsoncpp/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/core/x86_64/libarchive/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/x86_64/libuv/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/core/x86_64/ncurses/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/x86_64/rhash/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/x86_64/lcms2/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/core/x86_64/gnutls/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/x86_64/qt6-base/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/x86_64/ninja/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/core/x86_64/make/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/core/x86_64/gc/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/any/python-wheel/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/any/python-installer/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/any/python-build/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/x86_64/c-ares/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/core/x86_64/icu/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/x86_64/libngtcp2/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/core/x86_64/libnsl/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/x86_64/simdjson/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/core/x86_64/procps-ng/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/any/nodejs-nopt/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/any/python-sphinxcontrib-applehelp/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/any/python-sphinxcontrib-devhelp/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/any/nvm/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/x86_64/giflib/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/core/x86_64/libisl/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/any/node-gyp/download"
-download_and_extract "$URL" "$HOME/opt/"
-
-URL="https://archlinux.org/packages/extra/x86_64/unzip/download"
-download_and_extract "$URL" "$HOME/opt/"
 
 #xfce4
 #URL"https://archlinux.org/packages/extra/x86_64/exo/download"
@@ -616,16 +336,16 @@ download_and_extract "$URL" "$HOME/opt/"
 #URL"https://archlinux.org/packages/extra/x86_64/thunar/download"
 #download_and_extract "$URL" "$HOME/opt/"
 
-chmod +x "$HOME/opt/usr/bin/fastfetch"
-chmod +x "$HOME/opt/usr/bin/nano"
-touch "$HOME/.starman_flatpak_cache"
+chmod +x "$APPS/opt/usr/bin/fastfetch"
+chmod +x "$APPS/opt/usr/bin/nano"
+touch "$APPS/.starman_flatpak_cache"
 echo ""
 
 if file "$XDG_RUNTIME_DIR/dbus-session" | grep -q socket; then
   export DBUS_SESSION_BUS_ADDRESS=$(grep -E '^unix:' "$XDG_RUNTIME_DIR/dbus-session.address")
-  grep -v '^export DBUS_SESSION_BUS_ADDRESS=' "$HOME/opt/.flatpak.env" > "$HOME/opt/.flatpak.env.tmp"
-  echo "export DBUS_SESSION_BUS_ADDRESS=\"$DBUS_SESSION_BUS_ADDRESS\"" >> "$HOME/opt/.flatpak.env.tmp"
-  mv "$HOME/opt/.flatpak.env.tmp" "$HOME/opt/.flatpak.env"
+  grep -v '^export DBUS_SESSION_BUS_ADDRESS=' "$APPS/opt/.flatpak.env" > "$APPS/opt/.flatpak.env.tmp"
+  echo "export DBUS_SESSION_BUS_ADDRESS=\"$DBUS_SESSION_BUS_ADDRESS\"" >> "$APPS/opt/.flatpak.env.tmp"
+  mv "$HOME/opt/.flatpak.env.tmp" "$APPS/opt/.flatpak.env"
 else
   echo "dbus socket not found."
 fi
@@ -639,17 +359,17 @@ grep -Fxq "$FLATPAK_ENV_LINE" "$HOME/.bashrc" || echo "$FLATPAK_ENV_LINE" >> "$H
 grep -Fxq "$FLATPAK_LOGIC_LINE" "$HOME/.bashrc" || echo "$FLATPAK_LOGIC_LINE" >> "$HOME/.bashrc"
 
 
-if [ ! -f "$HOME/opt/flatpak-deps/usr/lib/libostree-1.so.1" ]; then
+if [ ! -f "$APPS/opt/flatpak-deps/usr/lib/libostree-1.so.1" ]; then
   echo "libostree-1.so.1 missing from deps!"
   exit 1
 fi
 
-"$HOME/opt/flatpak/usr/bin/flatpak" --version
+"$APPS/opt/flatpak/usr/bin/flatpak" --version
 sleep 3
 
-NPM_BASE="$HOME/opt/usr/lib/node_modules/npm"
-NVM_DIR="$HOME/opt/usr/share/nvm"
-BIN_DIR="$HOME/opt/usr/bin"
+NPM_BASE="$APPS/opt/usr/lib/node_modules/npm"
+NVM_DIR="$APPS/opt/usr/share/nvm"
+BIN_DIR="$APPS/opt/usr/bin"
 
 mkdir -p "$BIN_DIR"
 mkdir -p ~/opt/etc/xdg/xfce4/xfwm4
@@ -666,15 +386,15 @@ unset -f paru 2>/dev/null
 unset -f pacaur 2>/dev/null
 unset -f pacman 2>/dev/null
 
-ln -sf "$HOME/opt/bin/starman" "$HOME/opt/bin/yay"
-ln -sf "$HOME/opt/bin/starman" "$HOME/opt/bin/paru"
-ln -sf "$HOME/opt/bin/starman" "$HOME/opt/bin/pacaur"
-ln -sf "$HOME/opt/bin/starman" "$HOME/opt/bin/pacman"
+ln -sf "$APPS/opt/bin/starman" "$APPS/opt/bin/yay"
+ln -sf "$APPS/opt/bin/starman" "$APPS/opt/bin/paru"
+ln -sf "$APPS/opt/bin/starman" "$APPS/opt/bin/pacaur"
+ln -sf "$APPS/opt/bin/starman" "$APPS/opt/bin/pacman"
 
 
 echo ""
 
-export LD_LIBRARY_PATH="$HOME/opt/flatpak-deps/usr/lib:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="$APPS/opt/flatpak-deps/usr/lib:$LD_LIBRARY_PATH"
 
 
 sleep 3
